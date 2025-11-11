@@ -1,0 +1,31 @@
+---
+title: "PISA_667"
+author: "Wei Wang"
+date: "2025-09-23"
+output: html_document
+---
+
+```{r}
+library(lme4)
+
+# 数学空模型
+m0_math <- lmer(pv1math ~ 1 + (1 | cntschid), data = pisa_dat)
+summary(m0_math)
+
+mlmhelpr::icc(m0_math)
+mlmhelpr::design_effect(m0_math)
+
+```
+
+```{r}
+m1_math <- lmer(
+  pv1math ~ st004d01t + age + immig_recode + workpay_recode + misssc +
+             bsmj + relatst + learres + famsupsl + hisei + homepos +
+             icthome + ictout + ictwkdy + icteffic + ictenq + ictfeed +
+             (1 | cntschid), 
+  data = pisa_dat
+)
+summary(m1_math)
+
+```
+
