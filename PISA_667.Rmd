@@ -8,8 +8,6 @@ output: html_document
 ```{r}
 library(lme4)
 
-# test
-
 # 数学空模型
 m0_math <- lmer(pv1math ~ 1 + (1 | cntschid), data = pisa_dat)
 summary(m0_math)

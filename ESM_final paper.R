@@ -2,7 +2,6 @@
 library(readr)
 pisa_data <- read_csv("pisa_usa_data.csv")
 
-## test
 
 # RQ1: Student-level linear model (OLS equivalent, weighted)
 model_rq1 <- lm.sdf(
