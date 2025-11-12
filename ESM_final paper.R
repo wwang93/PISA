@@ -1,9 +1,30 @@
-
+# Load libraries
+library(EdSurvey)
+library(dplyr)
+library(ggplot2)
+library(lme4)
 library(readr)
-pisa_data <- read_csv("pisa_usa_data.csv")
+pisa_dat <- read_csv("pisa_usa_data.csv")
 
 
 # RQ1: Student-level linear model (OLS equivalent, weighted)
+library(EdSurvey)
+
+# --- Step 1: 指定路径 ---（for wei's mac dir）
+data_dir <- "/Users/wangwei/Library/CloudStorage/GoogleDrive-wwang93@vols.utk.edu/My Drive/PISA_ICT_Project( Wei and Louis)/PISA_0809_dataset/PISA/2022"
+
+# --- Step 2: 读取 PISA USA ---
+pisa <- readPISA(path = data_dir, countries = "USA")
+
+# --- Step 3: 提取分析变量 ---
+pisa_dat <- EdSurvey::getData(pisa, varnames = c("cnt", "w_fstuwt", "w_schgrnrabwt", "st004d01t","cntschid", "cntstuid", "oecd", "age", "misssc", "workpay", "immig", "bsmj", "relatst", "learres", "famsupsl", "hisced", "hisei", "homepos", "ictsch", "icthome", "ictqual", "ictout", "ictwkdy", "icteffic", "ictenq", "ictfeed", "pv1math", "pv2math", "pv3math", "pv4math", "pv5math", "pv6math", "pv7math", "pv8math", "pv9math", "pv10math", "pv1read", "pv2read", "pv3read", "pv4read", "pv5read", "pv6read", "pv7read", "pv8read", "pv9read", "pv10read", "pv1scie", "pv2scie", "pv3scie", "pv4scie", "pv5scie", "pv6scie", "pv7scie", "pv8scie", "pv9scie", "pv10scie"), addAttributes = TRUE)
+
+
+# --- Step 4: 验证对象类型 ---
+class(pisa_dat)
+# 应输出: "light.edsurvey.data.frame" "data.frame"
+
+# --- Step 5: 跑回归 ---
 model_rq1 <- lm.sdf(
   formula = math ~ st004d01t + age + immig + workpay + misssc +
     bsmj + relatst + learres + famsupsl + hisei + homepos +
@@ -94,6 +115,9 @@ run_pv_models <- function(pv_list, formula_text, data) {
 # ---- Step 5: 运行 RQ2、RQ3、RQ4 模型 ----
 cat("Running RQ2 models (main effects)...\n")
 res_rq2 <- run_pv_models(pv_list, form_rq2, math_data)
+
+
+
 
 cat("Running RQ3 models (enhancement effect)...\n")
 res_rq3 <- run_pv_models(pv_list, form_rq3, math_data)
